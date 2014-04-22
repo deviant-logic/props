@@ -13,7 +13,7 @@ homepage:            http://github.com/deviant-logic/props
 bug-reports:         http://github.com/deviant-logic/props/issues
 source-repository head
   type: git
-  location: git://github.com/deviant-logic/fugue.git
+  location: git://github.com/deviant-logic/props.git
 
 library
   build-depends:       base >=4.6 && <5
