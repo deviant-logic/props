@@ -83,10 +83,10 @@ monoidal      = monoidalBy id
 --
 -- >>> :set -XTupleSections
 --
--- prop> isomorphic succ pred
+-- prop> isomorphic succ (pred :: Int -> Int)
 -- prop> isomorphic not not
--- prop> isomorphic reverse reverse
--- prop> isomorphic snd ((),)
+-- prop> isomorphic reverse (reverse :: String -> String)
+-- prop> isomorphic snd (((),) :: Int -> ((),Int))
 isomorphic = isomorphicBy id id
 
 -- | @Just a == (g . f) a@
