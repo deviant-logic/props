@@ -79,6 +79,24 @@ associative   = associativeBy id
 -- prop> monoidal (*) 1
 monoidal      = monoidalBy id
 
+-- | @a == (f . g) a && b == (g . f) b@
+--
+-- >>> :set -XTupleSections
+--
+-- prop> isomorphic succ pred
+-- prop> isomorphic not not
+-- prop> isomorphic reverse reverse
+-- prop> isomorphic snd ((),)
+isomorphic = isomorphicBy id id
+
+-- | @Just a == (g . f) a@
+--
+-- >>> import Text.Read (readMaybe)
+
+-- prop> partiallyIsomorphic id Just
+-- prop> partiallyIsomorphic show readMaybe
+partiallyIsomorphic = partiallyIsomorphicBy id
+
 -- | @eq (f a) == eq (g a)@
 --
 -- prop> equalizes even (*2) (*4)
@@ -103,3 +121,6 @@ monoidalBy      cmp f e a b c = all (identityBy cmp f e) [a, b, c] && associativ
 leftIdBy        cmp f e a     = eqBy cmp (f e a) a
 rightIdBy       cmp f e a     = eqBy cmp (f a e) a
 identityBy      cmp f e a     = leftIdBy cmp f e a && rightIdBy cmp f e a
+
+isomorphicBy  cmpa cmpb f g a b = invertsBy cmpa f g a && invertsBy cmpb g f b
+partiallyIsomorphicBy cmp f g a = eqBy (fmap cmp) (Just a) (g . f $ a)

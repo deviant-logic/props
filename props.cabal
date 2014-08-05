@@ -1,6 +1,6 @@
 name:                props
-version:             0.1
-synopsis:            Properties of functions and relations, perhaps for use with quickcheck
+version:             0.1.1
+synopsis:            Reusable quickcheck properties
 description:         Properties of functions and relations, perhaps for use with quickcheck
 license:             BSD3
 license-file:        LICENSE
