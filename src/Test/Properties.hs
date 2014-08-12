@@ -4,6 +4,8 @@ module Test.Properties where
 
 import Data.Function (on)
 
+
+
 -- | @f a b == f b a@
 --
 -- prop> symmetric (==) :: Int -> Int -> Bool
@@ -81,7 +83,6 @@ monoidal      = monoidalBy id
 
 -- | @a == (f . g) a && b == (g . f) b@
 --
--- >>> :set -XTupleSections
 --
 -- prop> isomorphic succ (pred :: Int -> Int)
 -- prop> isomorphic not not
@@ -91,11 +92,17 @@ isomorphic = isomorphicBy id id
 
 -- | @Just a == (g . f) a@
 --
--- >>> import Text.Read (readMaybe)
-
 -- prop> partiallyIsomorphic id Just
 -- prop> partiallyIsomorphic show readMaybe
 partiallyIsomorphic = partiallyIsomorphicBy id
+
+-- | @f a (g a b) == g a (f a b)@
+--
+-- <http://en.wikipedia.org/wiki/Absorption_law>
+--
+-- prop> absorptive (&&) (||)
+-- prop> absorptive min max
+absorptive          = absorptiveBy id
 
 -- | @eq (f a) == eq (g a)@
 --
@@ -124,3 +131,11 @@ identityBy      cmp f e a     = leftIdBy cmp f e a && rightIdBy cmp f e a
 
 isomorphicBy  cmpa cmpb f g a b = invertsBy cmpa f g a && invertsBy cmpb g f b
 partiallyIsomorphicBy cmp f g a = eqBy (fmap cmp) (Just a) (g . f $ a)
+
+absorptiveBy  cmp f g a b       = eqBy cmp (f a (g a b)) (g a (f a b))
+
+-- $setup
+-- = DocTest Setup
+--
+-- >>> :set -XTupleSections
+-- >>> import Text.Read (readMaybe)
