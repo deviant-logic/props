@@ -96,7 +96,7 @@ isomorphic = isomorphicBy id id
 -- prop> partiallyIsomorphic show readMaybe
 partiallyIsomorphic = partiallyIsomorphicBy id
 
--- | @f a (g a b) == g a (f a b)@
+-- | @f a (g a b) == a && g a (f a b) == a@
 --
 -- <http://en.wikipedia.org/wiki/Absorption_law>
 --
@@ -132,7 +132,8 @@ identityBy      cmp f e a     = leftIdBy cmp f e a && rightIdBy cmp f e a
 isomorphicBy  cmpa cmpb f g a b = invertsBy cmpa f g a && invertsBy cmpb g f b
 partiallyIsomorphicBy cmp f g a = eqBy (fmap cmp) (Just a) (g . f $ a)
 
-absorptiveBy  cmp f g a b       = eqBy cmp (f a (g a b)) (g a (f a b))
+absorptiveBy  cmp f g a b       = eqBy cmp (f a (g a b)) a
+                                  && eqBy cmp (g a (f a b)) a
 
 -- $setup
 -- = DocTest Setup
